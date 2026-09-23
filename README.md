@@ -1,12 +1,12 @@
 # Hemidi – Junior Animated Web Developer Entry Exam
 
-Đây là bài làm của mình cho vòng test Junior Animated Web Developer ở Hemidi. Mình dựng lại landing page "Sark" từ Figma bằng Next.js, rồi thêm chú robot 3D chạy bằng Three.js và GSAP ScrollTrigger. Robot đi theo người xem suốt trang.
+This is my submission for the Junior Animated Web Developer test at Hemidi. I rebuilt the "Sark" landing page from the Figma file in Next.js. I also added a 3D robot, driven by Three.js and GSAP ScrollTrigger, that follows the visitor down the page.
 
 - Live demo: https://tvinhthanh-interview.vercel.app/
 - Source: https://github.com/tvinhthanh/Tvinhthanh-Interview-Animated-Web
-- Stack: Next.js 16 (App Router, trang tĩnh), Three.js 0.180, GSAP 3.13
+- Stack: Next.js 16 (App Router, static), Three.js 0.180, GSAP 3.13
 
-## Chạy thử ở máy
+## Running it locally
 
 ```bash
 npm install
@@ -14,76 +14,76 @@ npm run dev              # http://localhost:3000
 npm run build && npm start
 ```
 
-Nếu deploy ở chỗ khác Vercel thì đặt thêm `NEXT_PUBLIC_SITE_URL` là domain thật để canonical, Open Graph và sitemap trỏ đúng. Trên Vercel không cần, code tự lấy domain production.
+If you deploy somewhere other than Vercel, set `NEXT_PUBLIC_SITE_URL` to the real domain so the canonical URL, Open Graph tags and sitemap point to the right place. On Vercel you don't need it: the code picks up the production domain automatically.
 
-## Model 3D
+## The 3D model
 
-Model lấy từ Sketchfab: [Friendly Sci-Fi Robot with Animations](https://sketchfab.com/3d-models/friendly-sci-fi-robot-with-animations-b83ac12ac3f14119a0988532d3613dac). Tác giả và giấy phép xem ở trang gốc.
+The model comes from Sketchfab: [Friendly Sci-Fi Robot with Animations](https://sketchfab.com/3d-models/friendly-sci-fi-robot-with-animations-b83ac12ac3f14119a0988532d3613dac). The author and license are listed on the original page.
 
-File tải về nặng 5,4 MB, trong đó riêng texture PNG đã chiếm 3,8 MB, quá nặng cho một landing page. Mình nén lại bằng glTF-Transform:
+The downloaded file was 5.4 MB, and the PNG texture alone took up 3.8 MB of that. That's far too heavy for a landing page, so I compressed it with glTF-Transform:
 
 ```bash
 npx @gltf-transform/cli optimize robot.glb public/models/friendly-robot.glb \
   --compress meshopt --texture-compress webp --texture-size 1024
 ```
 
-Kết quả còn 574 KB (giảm khoảng 89%). Texture thành WebP 1024px, 133 KB. Robot trên trang chỉ cao cỡ 500px nên 1024px vẫn nét. Mesh nén bằng meshopt, và `MeshoptDecoder` có sẵn trong three nên không phải kèm thêm file wasm nào. Cả 3 clip animation vẫn giữ nguyên.
+That brought it down to 574 KB, about 89% smaller. The texture is now a 1024px WebP of 133 KB, which still looks sharp since the robot is only around 500px tall on screen. The mesh uses meshopt compression. `MeshoptDecoder` ships with three, so no extra wasm file is needed. All three animation clips survived intact.
 
-## Robot chuyển động thế nào
+## How the robot moves
 
-Toàn bộ nằm trong [`lib/robotScene.js`](lib/robotScene.js).
+Everything lives in [`lib/robotScene.js`](lib/robotScene.js).
 
-Có một chỗ phải nói trước: đề bảo phát clip "Idle" ở Hero, nhưng model này **không có** clip Idle. Nó chỉ có `Look_Wave`, `Free_Fall` và `Sitting`. Nên ở Hero mình cho chạy `Look_Wave` lặp lại, cộng thêm một nhịp nhấp nhô nhẹ bằng code cho giống đang "thở". Thân robot xoay theo con trỏ chuột, có làm mượt để không bị giật.
+One thing up front: the brief asks for an "Idle" clip in the hero, but this model **doesn't have one**. It only has `Look_Wave`, `Free_Fall` and `Sitting`. So in the hero I loop `Look_Wave` and add a gentle bob in code so it looks like it's breathing. The robot's body turns toward the mouse cursor, with smoothing so it never snaps.
 
-Lúc đầu mình dịch cả khung canvas bằng CSS với số pixel cố định. Làm vậy đổi kích thước màn hình là robot lệch khỏi bố cục. Nên mình làm lại theo cách khác:
+My first version moved the whole canvas with CSS using fixed pixel offsets. It fell apart as soon as the window size changed, because the robot drifted out of place. So I rebuilt it:
 
-- Canvas phủ toàn màn hình.
-- Trong trang đặt sẵn vài "điểm neo" (`data-robot-anchor`) đúng chỗ robot cần đứng.
-- Mỗi frame, code đo vị trí của điểm neo trên màn hình, đổi sang tọa độ 3D, rồi GSAP `quickTo` kéo position, scale và rotation của robot tới đó.
+- The canvas covers the whole viewport.
+- The page has a few "anchor" elements (`data-robot-anchor`) placed exactly where the robot should stand.
+- Every frame, the code reads the anchor's position on screen and converts it to 3D coordinates. Then GSAP `quickTo` eases the robot's position, scale and rotation toward it.
 
-Nhờ vậy robot luôn khớp layout, kể cả trên tablet hay điện thoại.
+This keeps the robot lined up with the layout on any screen size, including tablets and phones.
 
-| Section | Robot ở đâu | Clip |
+| Section | Where the robot is | Clip |
 |---|---|---|
-| Hero | Trong vòm bên phải, quay về phía tiêu đề | `Look_Wave` |
-| Features | Cạnh tiêu đề | `Free_Fall` |
-| About | Ngồi trong vòm video | `Sitting` |
-| Team | Trong ô tròn của Leslie Alexander, vẫy tay như một thành viên | `Look_Wave` |
+| Hero | Inside the arch on the right, turned toward the headline | `Look_Wave` |
+| Features | Next to the heading | `Free_Fall` |
+| About | Sitting inside the video arch | `Sitting` |
+| Team | In Leslie Alexander's circle, waving like a team member | `Look_Wave` |
 
-Giữa hai section, robot "rơi" từ điểm neo này sang điểm neo kế tiếp bằng clip `Free_Fall`. Clip được đổi bằng ScrollTrigger và chuyển mượt qua fade 0,45 giây. Nếu máy bật "giảm chuyển động" (`prefers-reduced-motion`), robot chỉ đứng yên.
+Between sections the robot "falls" from one anchor to the next using the `Free_Fall` clip. ScrollTrigger switches the clips, with a 0.45s crossfade between them. If the visitor has `prefers-reduced-motion` turned on, the robot just stands still.
 
-## Tốc độ tải
+## Performance
 
-Đề yêu cầu PageSpeed Desktop trên 90. Đo bằng Lighthouse trên bản Vercel:
+The brief asks for a PageSpeed Desktop score above 90. Lighthouse results on the Vercel deployment:
 
 | | Performance | Accessibility | Best Practices | SEO |
 |---|---|---|---|---|
 | Desktop | 99 | 100 | 100 | 100 |
 | Mobile | 96 | 100 | 100 | 100 |
 
-Những việc mình làm để đạt được:
+What got it there:
 
-- **Three.js không nằm trong JS lúc đầu.** Nó chỉ được tải khi trang đã hiện xong, font tiêu đề đã vào, và robot đã lọt vào màn hình. Trên máy tính robot có sẵn ở màn hình đầu nên vẫn tải ngay. Trên điện thoại robot nằm dưới, nên chỉ tải khi người dùng bắt đầu cuộn.
-- **Máy không có GPU thì hiện ảnh tĩnh.** Chỗ này mình vấp khi chạy PageSpeed thật: desktop chỉ được 69. Lý do là máy của Google không có GPU, nên WebGL phải vẽ bằng CPU và mỗi frame thành một task dài. Giờ trước khi tải Three.js, trang thử tạo WebGL với `failIfMajorPerformanceCaveat`. Nếu máy chỉ vẽ được bằng phần mềm, trang hiện ảnh robot 18 KB thay cho bản 3D. Người dùng có GPU vẫn thấy robot 3D bình thường.
-- **Robot ra khỏi màn hình thì ngừng render**, và độ phân giải canvas giới hạn ở 1.5x.
-- **Font tự host qua `next/font`** (Inter và Source Serif Pro), có font dự phòng cùng kích thước nên đổi font không làm trang nhảy (CLS = 0).
-- **Tiêu đề hero hiện ngay, không fade-in**, vì đó là phần tử LCP.
-- **Ảnh qua `next/image`**, các animation chỉ dùng `transform` và `opacity`.
-- **SEO cơ bản đủ cả:** metadata, ảnh Open Graph, canonical, sitemap, robots.txt, JSON-LD.
+- **Three.js is not part of the initial JavaScript.** It only loads once the page has rendered, the heading font is in, and the robot is actually on screen. On desktop the robot is visible right away, so it loads immediately. On phones the robot sits below the fold, so it only loads once the visitor starts scrolling.
+- **No GPU means a static image.** This one caught me out on real PageSpeed: desktop scored 69. Google's test machines have no GPU, so WebGL was rendering on the CPU and every frame became a long task. Now, before loading Three.js, the page tries to create a WebGL context with `failIfMajorPerformanceCaveat`. If only software rendering is available, it shows an 18 KB image of the robot instead of the 3D version. Visitors with a GPU still get the 3D robot as normal.
+- **Rendering stops when the robot is off screen**, and the canvas resolution is capped at 1.5x.
+- **Fonts are self-hosted with `next/font`** (Inter and Source Serif Pro), with size-matched fallback fonts, so the page doesn't jump when the fonts swap in (CLS = 0).
+- **The hero headline shows up immediately with no fade-in**, since it's the LCP element.
+- **Images go through `next/image`**, and animations only touch `transform` and `opacity`.
+- **The SEO basics are covered:** metadata, an Open Graph image, canonical URL, sitemap, robots.txt and JSON-LD.
 
-Trong lúc model đang tải, chỗ robot sẽ đứng có một chấm sáng xanh nhấp nháy, tải xong thì robot hiện dần lên.
+While the model loads, a small pulsing green dot marks the spot where the robot will appear. When loading finishes, the robot fades in.
 
-## Cấu trúc thư mục
+## Project structure
 
 ```
-app/            layout, trang chính, CSS, font, sitemap/robots/OG image
-components/     Experience.jsx: canvas, lazy-load scene, menu mobile
-lib/            robotScene.js: scene Three.js, điểm neo, GSAP
-public/models/  friendly-robot.glb (đã nén) và ảnh robot dự phòng
+app/            layout, main page, CSS, fonts, sitemap/robots/OG image
+components/     Experience.jsx: canvas, lazy-loading the scene, mobile menu
+lib/            robotScene.js: Three.js scene, anchors, GSAP
+public/models/  friendly-robot.glb (compressed) and the fallback robot image
 ```
 
-## Nếu có thêm thời gian
+## With more time
 
-- Form Subscribe ở footer mới chỉ hiện lời cảm ơn, chưa nối backend.
-- Các link Blog, Pages, Login trỏ tới các section trong trang vì bản thiết kế chỉ có một trang.
-- Muốn có clip Idle thật thì phải tự làm thêm trong Blender, hoặc tìm model khác có sẵn clip Idle.
+- The newsletter form in the footer only shows a thank-you message; it isn't connected to a backend yet.
+- The Blog, Pages and Login links point to sections on this page, since the design only covers a single page.
+- A real Idle clip would need to be made in Blender, or I'd switch to a model that already includes one.
