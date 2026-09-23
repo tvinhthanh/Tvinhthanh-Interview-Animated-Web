@@ -84,4 +84,3 @@ components/     Experience.jsx — canvas + lazy-load scene
 lib/            robotScene.js — Three.js scene, neo layout, GSAP
 public/models/  friendly-robot.glb (đã tối ưu)
 ```
-"# Interview-Animated-Web" 
