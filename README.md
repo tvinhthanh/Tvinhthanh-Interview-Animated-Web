@@ -2,7 +2,8 @@
 
 Landing page "Sark" (Figma → Next.js) với mascot robot 3D điều khiển bằng Three.js + GSAP ScrollTrigger.
 
-- **Live demo:** _<link Vercel>_
+- **Live demo:** https://tvinhthanh-interview.vercel.app/
+- **Source:** https://github.com/tvinhthanh/Tvinhthanh-Interview-Animated-Web
 - **Stack:** Next.js 16 (App Router, trang tĩnh prerender), Three.js 0.180, GSAP 3.13 + ScrollTrigger
 
 ## Chạy local
@@ -57,12 +58,12 @@ Giữa hai điểm neo robot "rơi" sang điểm tiếp theo (clip `Free_Fall`).
 
 ## 3. Hiệu năng & SEO
 
-Lighthouse 12 CLI (production build `next start`, localhost; desktop preset / mobile throttling mặc định):
+Lighthouse 12 trên bản deploy Vercel (desktop preset / mobile throttling mặc định, 2–3 lần đo):
 
 | | Performance | Accessibility | Best Practices | SEO |
 |---|---|---|---|---|
-| Desktop | **100** | 100 | 100 | 100 |
-| Mobile | 97 | 100 | 100 | 100 |
+| Desktop | **96–99** | 100 | 100 | 100 |
+| Mobile | 94–98 | 100 | 100 | 100 |
 
 Những gì đã làm:
 
