@@ -794,7 +794,7 @@ body[data-robot] .robot-loader {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.55fr 1fr 1fr 1fr;
+  grid-template-columns: 1.4fr 1fr 1fr 1.3fr;
   gap: 56px;
 }
 
@@ -815,15 +815,25 @@ body[data-robot] .robot-loader {
   font-weight: 700;
 }
 
-.footer-grid .footer-email {
-  display: inline-block;
-  margin-top: 24px;
-  color: var(--ink);
-  font-weight: 900;
-  text-decoration: underline;
-  text-decoration-color: var(--green);
-  text-decoration-thickness: 3px;
-  text-underline-offset: 5px;
+.footer-contact a {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.footer-contact svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  color: var(--green-deep);
+}
+
+.subscribe-status {
+  min-height: 1.4em;
+  margin-top: 10px;
+  color: var(--green-deep);
+  font-size: 0.8rem;
+  font-weight: 700;
 }
 
 .subscribe {

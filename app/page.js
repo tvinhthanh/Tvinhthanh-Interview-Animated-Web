@@ -1,7 +1,9 @@
 import {
   ChartNoAxesCombined,
   CloudCog,
+  Mail,
   Menu,
+  Phone,
   Play,
   Settings,
 } from "lucide-react";
@@ -9,18 +11,18 @@ import Image from "next/image";
 import Experience from "../components/Experience";
 
 const services = [
-  ["Search Opportunity Analysis", "We map demand, competitors, and ranking gaps to focus effort where it can create measurable business value."],
-  ["Content Optimization", "We improve information architecture, intent coverage, and on-page signals without flattening your brand voice."],
-  ["Keyword Research", "Search themes are grouped by intent and customer journey, then prioritized by relevance, difficulty, and opportunity."],
-  ["Continuous Testing", "Every release is measured against a clear baseline so technical and content decisions improve with evidence."],
-  ["E-Commerce SEO", "Category, product, and faceted navigation strategies help shoppers find the right products from organic search."],
-  ["Website Migrations", "Redirect mapping, crawl validation, and launch monitoring protect organic visibility during platform changes."],
+  ["Target Analysis", "Target analysis is an examination of potential targets to determine military importance."],
+  ["Content Optimization", "Content optimization is the process of making sure content is written in a way that it can reach."],
+  ["Keyword Research", "Keyword research is the process by which you research popular search engines like Google"],
+  ["Continuous Testing", "Continuous Testing is the process of executing automated tests as part of the software delivery."],
+  ["E-Commerce SEO", "Ecommerce SEO is the process of making your online store more visible in the search engine."],
+  ["Website Migrations", "A site migration is a term broadly used by SEO professionals to describe any event website."],
 ];
 
 const questions = [
   [
     "Q. What is SEO and does my business need SEO?",
-    "Search Engine Optimization is the practice of ranking a website. Yes, your business should be investing in SEO. It offers a way to increase traffic without paying for every click.",
+    "Search Engine Optimization is the practice of ranking a website. Yes, your business should be investing in SEO. Search engine optimization offers a way to increase traffic without paying for each and every click.",
   ],
   ["Q. What are Google's most important ranking factors?", "Helpful content, technical quality, links, intent match, and strong user experience all contribute."],
   ["Q. What is the difference between On-Page SEO and technical SEO?", "On-page SEO improves content and page meaning; technical SEO improves crawlability, speed, and structure."],
@@ -63,14 +65,15 @@ export default function Home() {
           <Menu aria-hidden="true" />
         </button>
         <nav className="nav-links" aria-label="Primary navigation">
-          <a href="#features">Features</a>
+          <a href="#features">Demos</a>
           <a href="#about">About</a>
-          <a href="#services">Services</a>
-          <a href="#team">Team</a>
-          <a href="#faq">FAQ</a>
+          <a href="#services">Blog</a>
+          <a href="#team">Pages</a>
+          <a href="#contact">Contact</a>
         </nav>
         <div className="header-actions">
-          <a className="button button-dark" href="#contact">Request an audit</a>
+          <a className="login-link" href="#contact">Login</a>
+          <a className="button button-dark" href="#contact">Get Started Free</a>
         </div>
       </header>
 
@@ -95,7 +98,7 @@ export default function Home() {
         </section>
 
         <section className="trust-band" aria-labelledby="trusted-heading">
-          <p id="trusted-heading">Trusted by 1,000+ growing brands</p>
+          <p id="trusted-heading">1000+ Big brands trust us</p>
           <ul aria-label="Trusted brands">
             <li><span className="logo-square microsoft" />Microsoft</li>
             <li><span className="logo-airbnb" />airbnb</li>
@@ -109,9 +112,9 @@ export default function Home() {
           <div className="robot-anchor robot-anchor--features" data-robot-anchor="features" aria-hidden="true" />
           <div className="section-heading"><h2><mark>Awesome features</mark><br />optimizing your website</h2></div>
           <div className="feature-grid">
-            <article><ChartNoAxesCombined aria-hidden="true" /><h3>Technical foundation</h3><p>Crawlability, performance, structured data, and internal linking are reviewed as one connected system.</p></article>
-            <article><CloudCog aria-hidden="true" /><h3>Evidence-led strategy</h3><p>Search demand and business goals shape a focused roadmap with clear priorities and measurable outcomes.</p></article>
-            <article><Settings aria-hidden="true" /><h3>Continuous improvement</h3><p>We monitor releases, rankings, and conversions so each iteration is informed by real customer behavior.</p></article>
+            <article><ChartNoAxesCombined aria-hidden="true" /><h3>Initial SEO Project</h3><p>SEO is an ever-changing practice dictated by updates in SEO algorithms and technological innovation.</p></article>
+            <article><CloudCog aria-hidden="true" /><h3>SEO Audit &amp; Strategy</h3><p>Campaigns are tracked and data is leveraged throughout every campaign, ensuring our clients are one step.</p></article>
+            <article><Settings aria-hidden="true" /><h3>Local SEO Project</h3><p>This is the process of getting other websites to link back to a website. Links are a signal to Google that a website.</p></article>
           </div>
         </section>
 
@@ -121,7 +124,7 @@ export default function Home() {
           </div>
           <div className="split-copy">
             <h2>We favor increasing the <mark>visibility of the website</mark></h2>
-            <p>At its core, search engine optimization is increasing your website&apos;s visibility in the results of major search engines and giving users what they need.</p>
+            <p>At its core, the meaning of search engine optimization (SEO) is increasing your website&apos;s visibility in the results of major search engines &amp; users and your customers want or need.</p>
             <div className="stats">
               <div><strong>70k+</strong><span>SEO Projects completed</span></div>
               <div><strong>156+</strong><span>Satisfied Customers</span></div>
@@ -134,7 +137,7 @@ export default function Home() {
           <div className="service-grid">
             {services.map(([title, description]) => (
               <article key={title}>
-                <h3>{title}</h3><p>{description}</p><a href="#contact">Discover More <span>+</span></a>
+                <h3>{title}</h3><p>{description}</p><a href="#contact">Discover More <span aria-hidden="true">→</span></a>
               </article>
             ))}
           </div>
@@ -143,17 +146,17 @@ export default function Home() {
         <section className="team section-beige" id="team">
           <div className="team-intro">
             <h2><mark>Meet our amazing SEO</mark><br />team for your business</h2>
-            <p>Our SEO team will take the time to truly understand your business, your goals, and your mission. We recognize that your needs are unique.</p>
+            <p>Our SEO team will take the time to truly understand your business, your goals, and your mission. We recognize that your needs are unique, and that&apos;s what inspires our team.</p>
           </div>
           <div className="team-grid">
             <article><Image src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=360&h=360&q=80" alt="Esther Howard, Senior SEO Manager" width={282} height={282} sizes="(max-width: 680px) 282px, (max-width: 980px) 40vw, 282px" /><h3>Esther Howard</h3><p>Senior SEO Manager</p></article>
-            <article className="team-empty" data-robot-anchor="team" aria-label="Open team position" />
+            <article><div className="team-empty" data-robot-anchor="team" aria-hidden="true" /><h3>Leslie Alexander</h3><p>SEO Executive</p></article>
             <article><Image src="https://images.unsplash.com/photo-1531891437562-4301cf35b7e4?auto=format&fit=crop&w=360&h=360&q=80" alt="Savannah Nguyen, Account Manager" width={282} height={282} sizes="(max-width: 680px) 282px, (max-width: 980px) 40vw, 282px" /><h3>Savannah Nguyen</h3><p>Account Manager</p></article>
           </div>
         </section>
 
         <section className="faq section-white" id="faq">
-          <div className="section-heading"><h2><mark>Frequently asked</mark><br />questions</h2></div>
+          <div className="section-heading"><h2><mark>Frequently asked</mark><br />question</h2></div>
           <div className="accordion">
             {questions.map(([question, answer], index) => (
               <details key={question} open={index === 0}><summary>{question}</summary><p>{answer}</p></details>
@@ -171,15 +174,25 @@ export default function Home() {
       <footer className="site-footer">
         <div className="footer-grid">
           <div>
-            <a href="#main-content"><Brand /></a>
-            <p>Search strategy grounded in technical quality, useful content, and measurable business outcomes.</p>
-            <a className="footer-email" href="mailto:hello@sark.example">hello@sark.example</a>
+            <a href="#main-content" aria-label="Sark home"><Brand /></a>
+            <p>There are many variations of passages of Lorem the Ipsum available it majority.</p>
+            <form className="subscribe" aria-label="Newsletter">
+              <label className="sr-only" htmlFor="subscribe-email">Email address</label>
+              <input id="subscribe-email" type="email" name="email" placeholder="Enter your email" autoComplete="email" required />
+              <button type="submit">Subscribe</button>
+            </form>
+            <p className="subscribe-status" role="status" />
           </div>
-          <div><h3>Services</h3><a href="#services">Technical SEO</a><a href="#services">Content strategy</a><a href="#services">E-commerce SEO</a><a href="#services">Site migrations</a></div>
-          <div><h3>Company</h3><a href="#about">Our approach</a><a href="#team">Team</a><a href="#faq">FAQ</a><a href="#contact">Contact</a></div>
-          <div><h3>Contact Info</h3><p>455 West Orchard Street<br />Kings Mountain, NC 280867</p><a href="tel:+0882466422710">+088 (246) 642-27-10</a><a href="mailto:example@gmail.com">example@gmail.com</a></div>
+          <div><h3>Services</h3><a href="#services">Incident Responder</a><a href="#services">Secure Managed IT</a><a href="#services">Check website Url</a><a href="#services">Locker Security</a></div>
+          <div><h3>About Us</h3><a href="#about">Payment Plans</a><a href="#about">Make saving More</a><a href="#about">Tax Calculator</a><a href="#contact">Talk To Us</a></div>
+          <div className="footer-contact">
+            <h3>Contact Info</h3>
+            <p>455 West Orchard Street<br />Kings Mountain, NC 280867</p>
+            <a href="tel:+0882466422710"><Phone aria-hidden="true" />+088 (246) 642-27-10</a>
+            <a href="mailto:example@gmail.com"><Mail aria-hidden="true" />example@gmail.com</a>
+          </div>
         </div>
-        <p className="copyright">© 2026 Sark. All rights reserved.</p>
+        <p className="copyright">© 2022 Sharko All Rights Reserved. Designed by Finestdevs</p>
       </footer>
     </>
   );

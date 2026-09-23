@@ -83,9 +83,20 @@ export default function Experience() {
       }
     };
 
+    // Newsletter form has no backend yet: keep the email out of the URL and
+    // confirm in place instead of reloading the page.
+    const subscribeForm = document.querySelector(".subscribe");
+    const subscribeStatus = document.querySelector(".subscribe-status");
+    const handleSubscribe = (event) => {
+      event.preventDefault();
+      if (subscribeStatus) subscribeStatus.textContent = "Thanks for subscribing!";
+      subscribeForm.reset();
+    };
+
     navToggle?.addEventListener("click", toggleNavigation);
     navLinks.forEach((link) => link.addEventListener("click", closeNavigation));
     document.addEventListener("keydown", handleKeyDown);
+    subscribeForm?.addEventListener("submit", handleSubscribe);
 
     let cancelled = false;
     let disposeScene;
@@ -106,6 +117,7 @@ export default function Experience() {
       navToggle?.removeEventListener("click", toggleNavigation);
       navLinks.forEach((link) => link.removeEventListener("click", closeNavigation));
       document.removeEventListener("keydown", handleKeyDown);
+      subscribeForm?.removeEventListener("submit", handleSubscribe);
       document.body.classList.remove("nav-open");
     };
   }, []);
