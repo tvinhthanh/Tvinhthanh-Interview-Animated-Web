@@ -1082,7 +1082,7 @@ body[data-robot="error"] .robot-poster {
   }
 
   .hero h1 {
-    font-size: clamp(2.4rem, 11vw, 3.25rem);
+    font-size: clamp(2rem, 10.2vw, 3.25rem);
     line-height: 1.08;
   }
 
