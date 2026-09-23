@@ -1,0 +1,17 @@
+node_modules/
+.next/
+out/
+*.log
+.DS_Store
+
+# Local env
+.env
+.env*.local
+
+# Raw Sketchfab download (optimised copy lives in public/models)
+friendly-sci-fi-robot-with-animations/
+*.zip
+
+# Tooling
+.claude/
+.vercel

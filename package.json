@@ -1,0 +1,18 @@
+{
+  "name": "hemidi-animated-web-test",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "gsap": "3.13.0",
+    "lucide-react": "0.544.0",
+    "next": "^16.3.6",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "three": "0.180.0"
+  }
+}
