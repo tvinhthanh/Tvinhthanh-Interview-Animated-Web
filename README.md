@@ -54,12 +54,14 @@ Between sections the robot "falls" from one anchor to the next using the `Free_F
 
 ## Performance
 
-The brief asks for a PageSpeed Desktop score above 90. Lighthouse results on the Vercel deployment:
+The brief asks for a PageSpeed Desktop score above 90. Results from PageSpeed Insights on the live site (Sep 23, 2026):
 
 | | Performance | Accessibility | Best Practices | SEO |
 |---|---|---|---|---|
-| Desktop | 99 | 100 | 100 | 100 |
-| Mobile | 96 | 100 | 100 | 100 |
+| Desktop | 100 | 100 | 100 | 100 |
+| Mobile | 98 | 100 | 100 | 100 |
+
+The robot runs at a steady 60 FPS while animating (measured with Chrome's Frame Rendering Stats).
 
 What got it there:
 
