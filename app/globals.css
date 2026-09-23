@@ -454,52 +454,19 @@ body[data-robot="error"] .robot-poster {
   padding: 0;
   margin: 0;
   list-style: none;
-  color: #26313e;
-  font-size: 1.03rem;
-  font-weight: 900;
 }
 
 .trust-band li {
   display: inline-flex;
   align-items: center;
   min-width: max-content;
-  gap: 8px;
 }
 
-.logo-square {
-  width: 22px;
-  height: 22px;
-  display: inline-block;
-  background: conic-gradient(#7fba00 0 25%, #00a4ef 0 50%, #ffb900 0 75%, #f25022 0);
+/* Real brand SVGs; height is shared so the wordmarks read at the same size */
+.trust-band img {
+  width: auto;
+  height: 26px;
 }
-
-.logo-airbnb {
-  width: 17px;
-  height: 22px;
-  display: inline-block;
-  border: 3px solid #ff5a5f;
-  border-bottom-width: 5px;
-  border-radius: 55% 55% 48% 48%;
-}
-
-.logo-dot {
-  width: 24px;
-  height: 24px;
-  display: inline-block;
-  border: 7px solid #111111;
-  border-radius: 50%;
-  background: #d6ff00;
-}
-
-.spark {
-  color: #ffb800;
-  font-size: 1.5rem;
-}
-
-.google-blue { color: #4285f4; }
-.google-red { color: #ea4335; }
-.google-yellow { color: #fbbc05; }
-.google-green { color: #34a853; }
 
 .features {
   position: relative;

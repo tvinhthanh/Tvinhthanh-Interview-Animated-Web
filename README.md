@@ -75,6 +75,8 @@ What got it there:
 
 While the model loads, a small pulsing green dot marks the spot where the robot will appear. When loading finishes, the robot fades in.
 
+The brand logos in the "trusted by" strip are the official SVGs from Wikimedia Commons, used only because they appear in the design. They're trademarks of their respective owners.
+
 ## Project structure
 
 ```

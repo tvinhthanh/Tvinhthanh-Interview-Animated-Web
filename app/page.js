@@ -104,11 +104,11 @@ export default function Home() {
         <section className="trust-band" aria-labelledby="trusted-heading">
           <p id="trusted-heading">1000+ Big brands trust us</p>
           <ul aria-label="Trusted brands">
-            <li><span className="logo-square microsoft" />Microsoft</li>
-            <li><span className="logo-airbnb" />airbnb</li>
-            <li><span className="logo-dot" />OLA</li>
-            <li>Walmart<span className="spark">*</span></li>
-            <li><span className="google-blue">G</span><span className="google-red">o</span><span className="google-yellow">o</span><span className="google-blue">g</span><span className="google-green">l</span><span className="google-red">e</span></li>
+            <li><img src="/logos/microsoft.svg" alt="Microsoft" width={122} height={26} loading="lazy" /></li>
+            <li><img src="/logos/airbnb.svg" alt="Airbnb" width={83} height={26} loading="lazy" /></li>
+            <li><img src="/logos/ola.svg" alt="OLA" width={66} height={26} loading="lazy" /></li>
+            <li><img src="/logos/walmart.svg" alt="Walmart" width={110} height={26} loading="lazy" /></li>
+            <li><img src="/logos/google.svg" alt="Google" width={77} height={26} loading="lazy" /></li>
           </ul>
         </section>
 
