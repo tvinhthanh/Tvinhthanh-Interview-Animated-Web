@@ -9,7 +9,7 @@
   --green-deep: #16a34a;
   --dark: #151820;
   --white: #ffffff;
-  --max: 1300px;
+  --max: 1170px;
   font-family: var(--font-inter), Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: var(--ink);
   background: var(--paper);
@@ -188,15 +188,15 @@ body[data-robot="ready"] #robot-canvas {
 .robot-anchor--hero {
   right: max(24px, calc((100vw - var(--max)) / 2));
   bottom: 28px;
-  width: min(38vw, 500px);
+  width: min(30vw, 426px);
   height: 540px;
 }
 
 .robot-anchor--features {
-  top: 36px;
+  top: 30px;
   left: max(24px, calc((100vw - var(--max)) / 2));
-  width: 200px;
-  height: 240px;
+  width: 160px;
+  height: 190px;
 }
 
 /* Placeholder while three.js + the model stream in */
@@ -332,7 +332,7 @@ body[data-robot="error"] .robot-poster {
   grid-template-columns: minmax(0, 1fr) minmax(320px, 470px);
   align-items: end;
   max-width: 100%;
-  min-height: 670px;
+  min-height: 728px;
   padding: 112px max(24px, calc((100vw - var(--max)) / 2)) 92px;
   overflow: hidden;
 }
@@ -341,11 +341,11 @@ body[data-robot="error"] .robot-poster {
   content: "";
   position: absolute;
   right: max(24px, calc((100vw - var(--max)) / 2));
-  bottom: -34px;
+  bottom: 0;
   z-index: -1;
-  width: min(38vw, 500px);
-  height: 535px;
-  border-radius: 250px 250px 0 0;
+  width: min(30vw, 426px);
+  height: calc(100% - 42px);
+  border-radius: 213px 213px 0 0;
   background: var(--clay);
 }
 
@@ -357,7 +357,7 @@ body[data-robot="error"] .robot-poster {
 .hero h1 {
   max-width: 820px;
   font-family: var(--font-serif), Georgia, "Times New Roman", serif;
-  font-size: clamp(56px, 5.6vw, 80px);
+  font-size: clamp(52px, 5vw, 72px);
   font-style: normal;
   font-weight: 600;
   line-height: 1.11;
@@ -486,7 +486,7 @@ body[data-robot="error"] .robot-poster {
 .video-split h2,
 .team-intro h2,
 .cta h2 {
-  font-size: clamp(2rem, 4vw, 3.15rem);
+  font-size: clamp(2rem, 3vw, 2.7rem);
   line-height: 1.05;
   letter-spacing: 0;
 }
@@ -509,10 +509,10 @@ body[data-robot="error"] .robot-poster {
 }
 
 .feature-grid svg {
-  width: 52px;
-  height: 52px;
-  margin-bottom: 22px;
-  stroke-width: 2.6;
+  width: auto;
+  height: 56px;
+  margin-bottom: 26px;
+  color: #12141d;
 }
 
 .feature-grid h3,
@@ -544,17 +544,17 @@ body[data-robot="error"] .robot-poster {
 
 .video-split {
   display: grid;
-  grid-template-columns: minmax(320px, 440px) minmax(0, 1fr);
+  grid-template-columns: minmax(320px, 448px) minmax(0, 1fr);
   align-items: center;
   gap: clamp(60px, 13vw, 180px);
-  padding: 92px max(24px, calc((100vw - var(--max)) / 2)) 0;
+  padding: 106px max(24px, calc((100vw - var(--max)) / 2)) 0;
   overflow: hidden;
 }
 
 .video-arch {
   position: relative;
   align-self: end;
-  height: 488px;
+  height: 538px;
   border-radius: 244px 244px 0 0;
   background: var(--clay);
 }
@@ -660,7 +660,7 @@ body[data-robot="error"] .robot-poster {
 .team-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(48px, 10vw, 130px);
+  gap: clamp(48px, 8vw, 117px);
   margin-top: 80px;
   text-align: center;
 }
@@ -672,7 +672,7 @@ body[data-robot="error"] .robot-poster {
 
 .team-grid img,
 .team-empty {
-  width: min(100%, 282px);
+  width: min(100%, 310px);
   height: auto;
   aspect-ratio: 1;
   border-radius: 50%;
@@ -705,7 +705,7 @@ body[data-robot="error"] .robot-poster {
 }
 
 .accordion {
-  max-width: 880px;
+  max-width: 960px;
   margin: 72px auto 0;
   border: 1px solid #e1e2e4;
   border-radius: 6px;

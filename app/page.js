@@ -1,14 +1,12 @@
 import {
-  ChartNoAxesCombined,
-  CloudCog,
   Mail,
   Menu,
   Phone,
   Play,
-  Settings,
 } from "lucide-react";
 import Image from "next/image";
 import Experience from "../components/Experience";
+import { AuditStrategyIcon, InitialProjectIcon, LocalProjectIcon } from "../components/FeatureIcons";
 
 const services = [
   ["Target Analysis", "Target analysis is an examination of potential targets to determine military importance."],
@@ -116,9 +114,9 @@ export default function Home() {
           <div className="robot-anchor robot-anchor--features" data-robot-anchor="features" aria-hidden="true" />
           <div className="section-heading"><h2><mark>Awesome features</mark><br />optimizing your website</h2></div>
           <div className="feature-grid">
-            <article><ChartNoAxesCombined aria-hidden="true" /><h3>Initial SEO Project</h3><p>SEO is an ever-changing practice dictated by updates in SEO algorithms and technological innovation.</p></article>
-            <article><CloudCog aria-hidden="true" /><h3>SEO Audit &amp; Strategy</h3><p>Campaigns are tracked and data is leveraged throughout every campaign, ensuring our clients are one step.</p></article>
-            <article><Settings aria-hidden="true" /><h3>Local SEO Project</h3><p>This is the process of getting other websites to link back to a website. Links are a signal to Google that a website.</p></article>
+            <article><InitialProjectIcon /><h3>Initial SEO Project</h3><p>SEO is an ever-changing practice dictated by updates in SEO algorithms and technological innovation.</p></article>
+            <article><AuditStrategyIcon /><h3>SEO Audit &amp; Strategy</h3><p>Campaigns are tracked and data is leveraged throughout every campaign, ensuring our clients are one step.</p></article>
+            <article><LocalProjectIcon /><h3>Local SEO Project</h3><p>This is the process of getting other websites to link back to a website. Links are a signal to Google that a website.</p></article>
           </div>
         </section>
 
