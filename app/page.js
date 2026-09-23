@@ -130,7 +130,7 @@ export default function Home() {
         </section>
 
         <section className="services section-white" id="services">
-          <div className="section-heading"><h2>Qualities &amp; customizable<br /><mark className="squiggle">ideal SEO services</mark></h2></div>
+          <div className="section-heading"><h2>Qualities &amp; customizable<br /><mark>ideal SEO services</mark></h2></div>
           <div className="service-grid">
             {services.map(([title, description]) => (
               <article key={title}>
