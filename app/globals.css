@@ -219,6 +219,22 @@ body[data-robot] .robot-loader {
   animation: none;
 }
 
+/* Static robot when WebGL is missing or software-only (see Experience.jsx) */
+.robot-poster {
+  display: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+body[data-robot="fallback"] .robot-poster,
+body[data-robot="error"] .robot-poster {
+  display: block;
+}
+
 @keyframes robot-loader-pulse {
   0%, 100% { transform: scale(0.7); opacity: 0.45; }
   50% { transform: scale(1.15); opacity: 1; }

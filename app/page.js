@@ -93,7 +93,11 @@ export default function Home() {
             </div>
           </div>
           <div className="hero-visual" aria-hidden="true">
-            <div className="robot-anchor robot-anchor--hero" data-robot-anchor="hero"><span className="robot-loader" /></div>
+            <div className="robot-anchor robot-anchor--hero" data-robot-anchor="hero">
+              <span className="robot-loader" />
+              {/* Shown only when WebGL is unavailable or software-rendered */}
+              <img className="robot-poster" src="/models/robot-poster.webp" alt="" width={400} height={432} loading="lazy" decoding="async" />
+            </div>
           </div>
         </section>
 

@@ -68,6 +68,7 @@ Lighthouse 12 trên bản deploy Vercel (desktop preset / mobile throttling mặ
 Những gì đã làm:
 
 - **Three.js + GSAP tách khỏi bundle đầu** — `import()` động sau sự kiện `load`, sau khi web font đã swap (tiêu đề hero là LCP), và chỉ khi một điểm neo của robot hiện ≥35% trên màn hình (`IntersectionObserver`) + `requestIdleCallback`. Desktop/tablet: robot nằm ngay màn hình đầu nên tải ngay; điện thoại: robot hero nằm phần lớn dưới fold nên chỉ tải khi người dùng bắt đầu cuộn.
+- **Không có GPU → ảnh tĩnh:** trước khi tải three.js, trang thử tạo WebGL context với `failIfMajorPerformanceCaveat`. Máy chỉ có WebGL phần mềm (SwiftShader/llvmpipe — kể cả máy chủ đo PageSpeed) sẽ hiển thị ảnh poster 18 KB thay vì render 3D bằng CPU (trước đó PSI Desktop chỉ đạt 69 vì TBT ~29 s).
 - **Model 574 KB** (xem trên), `renderer.compile()` trước khi hiện để tránh giật khung hình đầu.
 - **Render loop tự dừng** khi robot đã ra khỏi màn hình; pixel ratio giới hạn 1.5.
 - **Font tự host** qua `next/font` (Inter + Source Serif Pro 600, subset latin), có preload và fallback khớp metric → **CLS = 0**.

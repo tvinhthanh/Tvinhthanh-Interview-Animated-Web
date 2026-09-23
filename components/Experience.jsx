@@ -53,6 +53,21 @@ function whenIdle(callback) {
   };
 }
 
+// Probe for hardware-accelerated WebGL before downloading three.js. Machines
+// that would only get software rendering show the static poster instead.
+function hasFastWebGL() {
+  try {
+    const probe = document.createElement("canvas");
+    const options = { failIfMajorPerformanceCaveat: true };
+    const gl = probe.getContext("webgl2", options) || probe.getContext("webgl", options);
+    if (!gl) return false;
+    gl.getExtension("WEBGL_lose_context")?.loseContext();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export default function Experience() {
   const stageRef = useRef(null);
   const canvasRef = useRef(null);
@@ -101,6 +116,10 @@ export default function Experience() {
     let cancelled = false;
     let disposeScene;
     const cancelIdle = whenIdle(async () => {
+      if (!hasFastWebGL()) {
+        document.body.dataset.robot = "fallback";
+        return;
+      }
       try {
         const { initRobotScene } = await import("../lib/robotScene");
         if (cancelled) return;
