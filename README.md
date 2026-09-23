@@ -1,88 +1,89 @@
-# Hemidi — Junior Animated Web Developer Entry Exam
+# Hemidi – Junior Animated Web Developer Entry Exam
 
-Landing page "Sark" (Figma → Next.js) với mascot robot 3D điều khiển bằng Three.js + GSAP ScrollTrigger.
+Đây là bài làm của mình cho vòng test Junior Animated Web Developer ở Hemidi. Mình dựng lại landing page "Sark" từ Figma bằng Next.js, rồi thêm chú robot 3D chạy bằng Three.js và GSAP ScrollTrigger. Robot đi theo người xem suốt trang.
 
-- **Live demo:** https://tvinhthanh-interview.vercel.app/
-- **Source:** https://github.com/tvinhthanh/Tvinhthanh-Interview-Animated-Web
-- **Stack:** Next.js 16 (App Router, trang tĩnh prerender), Three.js 0.180, GSAP 3.13 + ScrollTrigger
+- Live demo: https://tvinhthanh-interview.vercel.app/
+- Source: https://github.com/tvinhthanh/Tvinhthanh-Interview-Animated-Web
+- Stack: Next.js 16 (App Router, trang tĩnh), Three.js 0.180, GSAP 3.13
 
-## Chạy local
+## Chạy thử ở máy
 
 ```bash
 npm install
-npm run dev      # http://localhost:3000
+npm run dev              # http://localhost:3000
 npm run build && npm start
 ```
 
-Biến môi trường (tuỳ chọn): `NEXT_PUBLIC_SITE_URL` — domain thật, dùng cho canonical / Open Graph / sitemap.
+Nếu deploy ở chỗ khác Vercel thì đặt thêm `NEXT_PUBLIC_SITE_URL` là domain thật để canonical, Open Graph và sitemap trỏ đúng. Trên Vercel không cần, code tự lấy domain production.
 
-## 1. Asset 3D
+## Model 3D
 
-Nguồn: [Friendly Sci-Fi Robot with Animations](https://sketchfab.com/3d-models/friendly-sci-fi-robot-with-animations-b83ac12ac3f14119a0988532d3613dac) (Sketchfab, tác giả và giấy phép xem tại trang gốc).
+Model lấy từ Sketchfab: [Friendly Sci-Fi Robot with Animations](https://sketchfab.com/3d-models/friendly-sci-fi-robot-with-animations-b83ac12ac3f14119a0988532d3613dac). Tác giả và giấy phép xem ở trang gốc.
 
-Tối ưu bằng [glTF-Transform](https://gltf-transform.dev/):
+File tải về nặng 5,4 MB, trong đó riêng texture PNG đã chiếm 3,8 MB, quá nặng cho một landing page. Mình nén lại bằng glTF-Transform:
 
 ```bash
 npx @gltf-transform/cli optimize robot.glb public/models/friendly-robot.glb \
   --compress meshopt --texture-compress webp --texture-size 1024
 ```
 
-| | Gốc | Sau tối ưu |
+Kết quả còn 574 KB (giảm khoảng 89%). Texture thành WebP 1024px, 133 KB. Robot trên trang chỉ cao cỡ 500px nên 1024px vẫn nét. Mesh nén bằng meshopt, và `MeshoptDecoder` có sẵn trong three nên không phải kèm thêm file wasm nào. Cả 3 clip animation vẫn giữ nguyên.
+
+## Robot chuyển động thế nào
+
+Toàn bộ nằm trong [`lib/robotScene.js`](lib/robotScene.js).
+
+Có một chỗ phải nói trước: đề bảo phát clip "Idle" ở Hero, nhưng model này **không có** clip Idle. Nó chỉ có `Look_Wave`, `Free_Fall` và `Sitting`. Nên ở Hero mình cho chạy `Look_Wave` lặp lại, cộng thêm một nhịp nhấp nhô nhẹ bằng code cho giống đang "thở". Thân robot xoay theo con trỏ chuột, có làm mượt để không bị giật.
+
+Lúc đầu mình dịch cả khung canvas bằng CSS với số pixel cố định. Làm vậy đổi kích thước màn hình là robot lệch khỏi bố cục. Nên mình làm lại theo cách khác:
+
+- Canvas phủ toàn màn hình.
+- Trong trang đặt sẵn vài "điểm neo" (`data-robot-anchor`) đúng chỗ robot cần đứng.
+- Mỗi frame, code đo vị trí của điểm neo trên màn hình, đổi sang tọa độ 3D, rồi GSAP `quickTo` kéo position, scale và rotation của robot tới đó.
+
+Nhờ vậy robot luôn khớp layout, kể cả trên tablet hay điện thoại.
+
+| Section | Robot ở đâu | Clip |
 |---|---|---|
-| File `.glb` | 5.41 MB | **574 KB** (−89%) |
-| Texture | PNG 3.8 MB | WebP 1024px, 133 KB |
-| Mesh | không nén | meshopt + quantization |
+| Hero | Trong vòm bên phải, quay về phía tiêu đề | `Look_Wave` |
+| Features | Cạnh tiêu đề | `Free_Fall` |
+| About | Ngồi trong vòm video | `Sitting` |
+| Team | Trong ô tròn của Leslie Alexander, vẫy tay như một thành viên | `Look_Wave` |
 
-Giữ nguyên đủ 3 clip: `Look_Wave`, `Free_Fall`, `Sitting`. Loader dùng `MeshoptDecoder` (không cần file wasm/draco riêng).
+Giữa hai section, robot "rơi" từ điểm neo này sang điểm neo kế tiếp bằng clip `Free_Fall`. Clip được đổi bằng ScrollTrigger và chuyển mượt qua fade 0,45 giây. Nếu máy bật "giảm chuyển động" (`prefers-reduced-motion`), robot chỉ đứng yên.
 
-## 2. Điều khiển animation
+## Tốc độ tải
 
-Code: [`lib/robotScene.js`](lib/robotScene.js).
-
-**Về clip "Idle":** model này **không có** clip Idle — chỉ có `Look_Wave`, `Free_Fall`, `Sitting`. Trạng thái mặc định ở Hero dùng `Look_Wave` (loop) kết hợp nhịp "thở" lên xuống nhẹ bằng code để đóng vai trò idle.
-
-**Hero:** robot phát `Look_Wave` lặp, thân robot xoay theo con trỏ chuột (lerp mượt, yaw + pitch).
-
-**Cuộn trang:** canvas phủ toàn viewport; robot được đặt vào các "điểm neo" nằm ngay trong layout (`data-robot-anchor`). Vị trí/kích thước của phần tử neo trên màn hình được quy đổi sang toạ độ world (camera perspective cố định), rồi GSAP `quickTo` đưa `position` / `scale` / `rotation` của robot tới đó — nên robot luôn khớp bố cục ở mọi kích thước màn hình, không dùng số pixel cứng.
-
-| Section | Điểm neo | Clip | Hướng |
-|---|---|---|---|
-| Hero | vòm bên phải | `Look_Wave` | quay về phía tiêu đề |
-| Features | cạnh tiêu đề | `Free_Fall` | quay về nội dung |
-| About (video) | trong vòm video | `Sitting` | quay về đoạn văn |
-| Team | ô trống "Open team position" | `Look_Wave` | nhìn thẳng — robot là "thành viên" |
-
-Giữa hai điểm neo robot "rơi" sang điểm tiếp theo (clip `Free_Fall`). Clip được đổi bằng `ScrollTrigger` cho từng section, chuyển mượt bằng fadeIn/fadeOut 0.45s.
-
-`prefers-reduced-motion`: robot đứng yên ở tư thế đầu tiên, không đổi clip, không có hiệu ứng reveal.
-
-## 3. Hiệu năng & SEO
-
-Lighthouse 12 trên bản deploy Vercel (desktop preset / mobile throttling mặc định, 2–3 lần đo):
+Đề yêu cầu PageSpeed Desktop trên 90. Đo bằng Lighthouse trên bản Vercel:
 
 | | Performance | Accessibility | Best Practices | SEO |
 |---|---|---|---|---|
-| Desktop | **96–99** | 100 | 100 | 100 |
-| Mobile | 94–98 | 100 | 100 | 100 |
+| Desktop | 99 | 100 | 100 | 100 |
+| Mobile | 96 | 100 | 100 | 100 |
 
-Những gì đã làm:
+Những việc mình làm để đạt được:
 
-- **Three.js + GSAP tách khỏi bundle đầu** — `import()` động sau sự kiện `load`, sau khi web font đã swap (tiêu đề hero là LCP), và chỉ khi một điểm neo của robot hiện ≥35% trên màn hình (`IntersectionObserver`) + `requestIdleCallback`. Desktop/tablet: robot nằm ngay màn hình đầu nên tải ngay; điện thoại: robot hero nằm phần lớn dưới fold nên chỉ tải khi người dùng bắt đầu cuộn.
-- **Không có GPU → ảnh tĩnh:** trước khi tải three.js, trang thử tạo WebGL context với `failIfMajorPerformanceCaveat`. Máy chỉ có WebGL phần mềm (SwiftShader/llvmpipe — kể cả máy chủ đo PageSpeed) sẽ hiển thị ảnh poster 18 KB thay vì render 3D bằng CPU (trước đó PSI Desktop chỉ đạt 69 vì TBT ~29 s).
-- **Model 574 KB** (xem trên), `renderer.compile()` trước khi hiện để tránh giật khung hình đầu.
-- **Render loop tự dừng** khi robot đã ra khỏi màn hình; pixel ratio giới hạn 1.5.
-- **Font tự host** qua `next/font` (Inter + Source Serif Pro 600, subset latin), có preload và fallback khớp metric → **CLS = 0**.
-- Tiêu đề hero không bị fade-in (giữ LCP sớm); các animation reveal chỉ dùng `transform`/`opacity`.
-- Ảnh qua `next/image` (AVIF/WebP, đúng kích thước, lazy-load dưới fold).
-- SEO: metadata, Open Graph image, canonical, `sitemap.xml`, `robots.txt`, JSON-LD `ProfessionalService`, HTML ngữ nghĩa, skip link.
+- **Three.js không nằm trong JS lúc đầu.** Nó chỉ được tải khi trang đã hiện xong, font tiêu đề đã vào, và robot đã lọt vào màn hình. Trên máy tính robot có sẵn ở màn hình đầu nên vẫn tải ngay. Trên điện thoại robot nằm dưới, nên chỉ tải khi người dùng bắt đầu cuộn.
+- **Máy không có GPU thì hiện ảnh tĩnh.** Chỗ này mình vấp khi chạy PageSpeed thật: desktop chỉ được 69. Lý do là máy của Google không có GPU, nên WebGL phải vẽ bằng CPU và mỗi frame thành một task dài. Giờ trước khi tải Three.js, trang thử tạo WebGL với `failIfMajorPerformanceCaveat`. Nếu máy chỉ vẽ được bằng phần mềm, trang hiện ảnh robot 18 KB thay cho bản 3D. Người dùng có GPU vẫn thấy robot 3D bình thường.
+- **Robot ra khỏi màn hình thì ngừng render**, và độ phân giải canvas giới hạn ở 1.5x.
+- **Font tự host qua `next/font`** (Inter và Source Serif Pro), có font dự phòng cùng kích thước nên đổi font không làm trang nhảy (CLS = 0).
+- **Tiêu đề hero hiện ngay, không fade-in**, vì đó là phần tử LCP.
+- **Ảnh qua `next/image`**, các animation chỉ dùng `transform` và `opacity`.
+- **SEO cơ bản đủ cả:** metadata, ảnh Open Graph, canonical, sitemap, robots.txt, JSON-LD.
 
-Loading: trong lúc tải model, vị trí robot hiển thị một chấm sáng nhấp nháy; khi xong robot fade-in.
+Trong lúc model đang tải, chỗ robot sẽ đứng có một chấm sáng xanh nhấp nháy, tải xong thì robot hiện dần lên.
 
-## Cấu trúc
+## Cấu trúc thư mục
 
 ```
-app/            layout, page, CSS, font, sitemap/robots/OG image
-components/     Experience.jsx — canvas + lazy-load scene
-lib/            robotScene.js — Three.js scene, neo layout, GSAP
-public/models/  friendly-robot.glb (đã tối ưu)
+app/            layout, trang chính, CSS, font, sitemap/robots/OG image
+components/     Experience.jsx: canvas, lazy-load scene, menu mobile
+lib/            robotScene.js: scene Three.js, điểm neo, GSAP
+public/models/  friendly-robot.glb (đã nén) và ảnh robot dự phòng
 ```
+
+## Nếu có thêm thời gian
+
+- Form Subscribe ở footer mới chỉ hiện lời cảm ơn, chưa nối backend.
+- Các link Blog, Pages, Login trỏ tới các section trong trang vì bản thiết kế chỉ có một trang.
+- Muốn có clip Idle thật thì phải tự làm thêm trong Blender, hoặc tìm model khác có sẵn clip Idle.
